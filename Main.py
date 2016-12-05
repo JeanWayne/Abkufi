@@ -11,6 +11,9 @@ text = textfile.read()
 textfile.close()
 
 
+punct = [line.rstrip('\n') for line in open('punctuation')]
+namendE = [line.rstrip('\n') for line in open('namedEntities')]
+
 sentences = nltk.sent_tokenize(text,language='english')
 
 for sentence in sentences:
@@ -22,5 +25,7 @@ for sentence in sentences:
             continue
         synsets = wn.synsets(lemma)
         if len(synsets) == 0:
-            if lemma.lower() not in ['et','al.']:
-                print(lemma + '\t' + tag)
+            if lemma.lower() not in punct and lemma.lower() not in namendE:
+                for token in punct:
+                    if token in lemma.lower():
+                        print(lemma + '\t' + tag) # Alles mit einem Sonderzeichen.
